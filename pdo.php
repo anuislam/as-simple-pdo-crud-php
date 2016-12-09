@@ -2,6 +2,7 @@
 require_once(__DIR__.'/config/config.php');
 /**
 * simple pdo crud
+* This is very simple database curd using php pdo.
 */
 class as_database
 {

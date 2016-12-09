@@ -1,8 +1,8 @@
 <?php
 
-define('dbname', 'ecommerce');
-define('dbusername', 'root');
-define('dbpassword', '');
-define('dbhost', 'localhost');
+define('dbname', ''); 		// Database name
+define('dbusername', ''); 	// Database username
+define('dbpassword', ''); 	// Database password
+define('dbhost', ''); 		// Database host
 
 ?>
