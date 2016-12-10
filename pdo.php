@@ -2,7 +2,6 @@
 require_once(__DIR__.'/config/config.php');
 /**
 * simple pdo crud
-* This is very simple database curd using php pdo.
 */
 class as_database
 {
@@ -151,14 +150,44 @@ class as_database
 
 	public function as_is_unique($tblname, $fieldname, $data){
 		$query 	= "SELECT * FROM `$tblname` WHERE `$fieldname` = :$fieldname";
-		$untdb 	= $this->db->prepare( $query );
+		$undb 	= $this->db->prepare( $query );
 		if (is_numeric($data) === true) {
-			$getdb->bindValue( ":$fieldname", $data, PDO::PARAM_INT);
+			$undb->bindValue( ":$fieldname", $data, PDO::PARAM_INT);
 		}else{
-			$getdb->bindValue(  ":$fieldname", $data, PDO::PARAM_STR);
+			$undb->bindValue(  ":$fieldname", $data, PDO::PARAM_STR);
 		};
-		$untdb->execute();
-		return ($untdb->rowCount() > 0) ? true : false ;
+		$undb->execute();
+		return ($undb->rowCount() > 0) ? true : false ;
+	}
+
+	public function as_get_return_val($tblname, $field, $where){
+		$query = "SELECT ";
+		if (is_array($field)) {
+			$fieldname = '`';
+			$fieldname .= implode('`, `',  $field);
+			$fieldname .= '` ';
+		}else{
+			$fieldname = '` ';
+			$fieldname .= $field;
+			$fieldname .= '` ';
+		}
+		if (is_array($where)) {
+			$a1 = 0;
+			foreach ($where as $key => $value) {
+				$andval = ($a1 > 0)? "AND ": null;
+				$whval = "$andval `$key` = '$value'";
+			}
+		}
+
+		$query .= $fieldname;
+		$query .= "FROM ";
+		$query .= "`$tblname`";
+		$query .= " WHERE";
+		$query .= $whval;
+
+		$rtdb 	= $this->db->query( $query );
+		$data 	= $rtdb->fetch(PDO::FETCH_ASSOC); 
+		return (count($data) > 0) ? $data : false ;
 	}
 }
 
