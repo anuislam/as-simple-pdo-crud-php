@@ -167,15 +167,17 @@ class as_database
 			$fieldname .= implode('`, `',  $field);
 			$fieldname .= '` ';
 		}else{
-			$fieldname = '` ';
+			$fieldname = '`';
 			$fieldname .= $field;
 			$fieldname .= '` ';
 		}
 		if (is_array($where)) {
 			$a1 = 0;
+			$whval = '';
 			foreach ($where as $key => $value) {
 				$andval = ($a1 > 0)? "AND ": null;
-				$whval = "$andval `$key` = '$value'";
+				$whval .= "$andval `$key` = '$value'";
+				$a1++;
 			}
 		}
 
@@ -184,7 +186,6 @@ class as_database
 		$query .= "`$tblname`";
 		$query .= " WHERE";
 		$query .= $whval;
-
 		$rtdb 	= $this->db->query( $query );
 		$data 	= $rtdb->fetch(PDO::FETCH_ASSOC); 
 		return (count($data) > 0) ? $data : false ;
